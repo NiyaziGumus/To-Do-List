@@ -3,9 +3,7 @@ body {
     font-family: 'Arial', sans-serif;
     background-color: #f4f4f4; /* Hintergrundfarbe */
     display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    justify-content: center; 
     margin: 0;
 }
 
@@ -15,42 +13,60 @@ body {
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    margin-top: 10vh;
 }
 
 h1 {
     color: #333;
     text-align: center;
+    margin-bottom: 20px; /* Abstand zwischen Überschrift und Eingabebereich */
 }
 
-/* Stile für das Eingabefeld und den Hinzufügen-Button */
-#todoInput {
-    width: 70%;
+/* Container für das Eingabefeld und die Buttons */
+.input-group {
+    display: flex;
+    width: 100%;
+    margin-bottom: 20px; /* Abstand zwischen Eingabebereich und Todo-Liste */
+}
+
+#todoInput, #addTodoButton, #clearAllTodosButton {
     padding: 10px;
-    margin-right: 10px;
     border: 1px solid #ddd;
     border-radius: 4px;
-    box-sizing: border-box;
+    margin-right: 10px; /* Abstand zwischen den Elementen */
 }
 
-#addTodoButton {
-    width: 25%;
-    padding: 10px;
-    background-color: #5cb85c;
+#todoInput {
+    flex-grow: 1; /* Eingabefeld nimmt verfügbaren Platz ein */
+}
+
+#addTodoButton, #clearAllTodosButton {
+    background-color: #5cb85c; /* Hintergrundfarbe für den Hinzufügen-Button */
     color: white;
     border: none;
-    border-radius: 4px;
     cursor: pointer;
 }
 
 #addTodoButton:hover {
-    background-color: #4cae4c;
+    background-color: #4cae4c; /* Dunkleres Grün beim Hover */
+}
+
+#clearAllTodosButton {
+    background-color: #d9534f; /* Hintergrundfarbe für den Alle löschen-Button */
+}
+
+#clearAllTodosButton:hover {
+    background-color: #c9302c; /* Dunkleres Rot beim Hover */
 }
 
 /* Stile für die Todo-Liste */
 #todoList {
     list-style: none;
     padding: 0;
+    width: 100%;
 }
 
 #todoList li {
@@ -70,12 +86,11 @@ h1 {
     cursor: pointer;
 }
 
-/* Anpassungen für die Checkmark-Box */
 .checkmark-box {
     width: 20px;
     height: 20px;
     margin-right: 10px;
-    border-radius: 50%; /* Macht die Box rund */
+    border-radius: 50%;
     border: 2px solid #bbb;
     display: flex;
     align-items: center;
@@ -85,16 +100,11 @@ h1 {
 
 .checkmark {
     color: #5cb85c;
-    display: none; /* Das Häkchen ist anfangs nicht sichtbar */
+    display: none;
 }
 
 #todoList li.completed .checkmark {
-    display: block; /* Zeigt das Häkchen an, wenn das Todo abgeschlossen ist */
-}
-
-.text.completed {
-    font-style: italic; /* Macht den Text kursiv */
-    color: #5cb85c;
+    display: block;
 }
 
 .text {
@@ -102,3 +112,8 @@ h1 {
     cursor: pointer;
 }
 
+.text.completed {
+    font-style: italic;
+    text-decoration: line-through;
+    color: #5cb85c;
+}

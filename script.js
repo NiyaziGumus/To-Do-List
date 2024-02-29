@@ -50,3 +50,19 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const clearAllButton = document.getElementById('clearAllTodosButton');
+    const todoList = document.getElementById('todoList');
+
+    clearAllButton.addEventListener('click', function() {
+        // Bestätigung hinzufügen, um versehentliches Löschen zu vermeiden
+        const confirmDelete = confirm('Möchten Sie wirklich alle Todos löschen?');
+        if (confirmDelete) {
+            // Entfernt alle Kinder von todoList
+            while (todoList.firstChild) {
+                todoList.removeChild(todoList.firstChild);
+            }
+        }
+    });
+});

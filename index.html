@@ -9,8 +9,11 @@
 <body>
     <div id="app">
         <h1>Todo-Liste</h1>
-        <input type="text" id="todoInput" placeholder="Was müssen Sie tun?"/>
-        <button id="addTodoButton">Hinzufügen</button>
+        <div class="input-group">
+            <input type="text" id="todoInput" placeholder="Was müssen Sie tun?"/>
+            <button id="addTodoButton">Hinzufügen</button>
+            <button id="clearAllTodosButton">Liste leeren</button>
+        </div>
         <ul id="todoList">
             <!-- Todo-Einträge werden hier aufgelistet -->
         </ul>
