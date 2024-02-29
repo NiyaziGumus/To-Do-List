@@ -30,13 +30,13 @@ h1 {
     margin-right: 10px;
     border: 1px solid #ddd;
     border-radius: 4px;
-    box-sizing: border-box; /* Damit die Breite inklusive Padding und Border ist */
+    box-sizing: border-box;
 }
 
 #addTodoButton {
     width: 25%;
     padding: 10px;
-    background-color: #5cb85c; /* Grüner Button */
+    background-color: #5cb85c;
     color: white;
     border: none;
     border-radius: 4px;
@@ -44,7 +44,7 @@ h1 {
 }
 
 #addTodoButton:hover {
-    background-color: #4cae4c; /* Etwas dunkleres Grün beim Hover */
+    background-color: #4cae4c;
 }
 
 /* Stile für die Todo-Liste */
@@ -58,4 +58,47 @@ h1 {
     margin-top: 8px;
     padding: 10px;
     border-radius: 4px;
+    display: flex;
+    align-items: center;
 }
+
+.deleteButton {
+    font-size: 0.8rem;
+    padding: 2px 5px;
+    margin-left: 10px;
+    color: #ff0000;
+    cursor: pointer;
+}
+
+/* Anpassungen für die Checkmark-Box */
+.checkmark-box {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    border-radius: 50%; /* Macht die Box rund */
+    border: 2px solid #bbb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.checkmark {
+    color: #5cb85c;
+    display: none; /* Das Häkchen ist anfangs nicht sichtbar */
+}
+
+#todoList li.completed .checkmark {
+    display: block; /* Zeigt das Häkchen an, wenn das Todo abgeschlossen ist */
+}
+
+.text.completed {
+    font-style: italic; /* Macht den Text kursiv */
+    color: #5cb85c;
+}
+
+.text {
+    flex-grow: 1;
+    cursor: pointer;
+}
+
