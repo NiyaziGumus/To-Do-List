@@ -112,7 +112,7 @@ h1 {
     cursor: pointer;
 }
 
-.text.completed {
+li.completed .text  {
     font-style: italic;
     text-decoration: line-through;
     color: #5cb85c;
