@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     addButton.addEventListener('click', function() {
         const todoText = inputField.value.trim();
         if (todoText !== '') {
-            todoAdd(todoText);
+            todoAdd(todoText, false); // Completed durumu varsayılan olarak false
             inputField.value = '';
             todosSpeichern();
         } else {
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (event.key === 'Enter') {
             const todoText = inputField.value.trim();
             if (todoText !== '') {
-                todoAdd(todoText);
+                todoAdd(todoText, false); // Completed durumu varsayılan olarak false
                 inputField.value = '';
                 todosSpeichern();
             } else {
@@ -42,9 +42,12 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-function todoAdd(text) {
+function todoAdd(text, completed) {
     const todoList = document.getElementById('todoList');
     const li = document.createElement('li');
+    if (completed) {
+        li.classList.add('completed');
+    }
     const checkmarkBox = document.createElement('div');
     checkmarkBox.classList.add('checkmark-box');
     const checkmark = document.createElement('span');
@@ -96,5 +99,3 @@ function todosSpeichern() {
     });
     localStorage.setItem('todos', JSON.stringify(todos));
 }
-
-// Bu değişiklikle, 'todoAdd' fonksiyonunu 'todosLaden' içindeki tekrar kodundan kurtardık ve doğrudan bu fonksiyonu çağırarak daha temiz bir kod elde ettik.
