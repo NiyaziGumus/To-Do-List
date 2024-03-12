@@ -9,14 +9,23 @@
 <body>
     <div id="app">
         <h1>Todo-Liste</h1>
+    
         <div class="input-group">
             <input type="text" id="todoInput" placeholder="Was müssen Sie tun?"/>
             <button id="addTodoButton">Hinzufügen</button>
             <button id="clearAllTodosButton">Liste leeren</button>
         </div>
-        <ul id="todoList">
-            <!-- Todo-Einträge werden hier aufgelistet -->
-        </ul>
+
+        <div id="groupContainer">
+            <div id="defaultGroup" class="group active" data-group="defaultGroup">Standardgruppe</div>
+            <button id="addGroupButton">+</button>
+        </div>
+        
+        <div id="todoGroups">
+            <ul id="todoList">
+                <!-- Todo-Einträge werden hier aufgelistet -->
+            </ul>
+        </div>
     </div>
 
     <script src="script.js"></script> 

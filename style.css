@@ -117,3 +117,24 @@ li.completed .text  {
     text-decoration: line-through;
     color: #5cb85c;
 }
+
+#groupContainer {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.group {
+    padding: 10px;
+    margin-right: 5px;
+    background-color: #ddd;
+    cursor: pointer;
+}
+
+.group.active {
+    background-color: #5cb85c;
+    color: white;
+}
+
+#addGroupButton {
+    padding: 10px;
+}
