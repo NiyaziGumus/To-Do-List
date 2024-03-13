@@ -1,9 +1,10 @@
 /* Grundlegende Seitenstile */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4; /* Hintergrundfarbe */
+    background-color: #f4f4f4;
+    /* Hintergrundfarbe */
     display: flex;
-    justify-content: center; 
+    justify-content: center;
     margin: 0;
 }
 
@@ -13,7 +14,7 @@ body {
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     display: flex;
     flex-direction: column;
     margin-top: 10vh;
@@ -22,44 +23,55 @@ body {
 h1 {
     color: #333;
     text-align: center;
-    margin-bottom: 20px; /* Abstand zwischen Überschrift und Eingabebereich */
+    margin-bottom: 20px;
+    /* Abstand zwischen Überschrift und Eingabebereich */
 }
 
 /* Container für das Eingabefeld und die Buttons */
 .input-group {
     display: flex;
     width: 100%;
-    margin-bottom: 20px; /* Abstand zwischen Eingabebereich und Todo-Liste */
+    margin-bottom: 20px;
+    /* Abstand zwischen Eingabebereich und Todo-Liste */
 }
 
-#todoInput, #addTodoButton, #clearAllTodosButton {
+#todoInput,
+#addTodoButton,
+#clearAllTodosButton {
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 4px;
-    margin-right: 10px; /* Abstand zwischen den Elementen */
+    margin-right: 10px;
+    /* Abstand zwischen den Elementen */
 }
 
 #todoInput {
-    flex-grow: 1; /* Eingabefeld nimmt verfügbaren Platz ein */
+    flex-grow: 1;
+    /* Eingabefeld nimmt verfügbaren Platz ein */
 }
 
-#addTodoButton, #clearAllTodosButton {
-    background-color: #5cb85c; /* Hintergrundfarbe für den Hinzufügen-Button */
+#addTodoButton,
+#clearAllTodosButton {
+    background-color: #5cb85c;
+    /* Hintergrundfarbe für den Hinzufügen-Button */
     color: white;
     border: none;
     cursor: pointer;
 }
 
 #addTodoButton:hover {
-    background-color: #4cae4c; /* Dunkleres Grün beim Hover */
+    background-color: #4cae4c;
+    /* Dunkleres Grün beim Hover */
 }
 
 #clearAllTodosButton {
-    background-color: #d9534f; /* Hintergrundfarbe für den Alle löschen-Button */
+    background-color: #d9534f;
+    /* Hintergrundfarbe für den Alle löschen-Button */
 }
 
 #clearAllTodosButton:hover {
-    background-color: #c9302c; /* Dunkleres Rot beim Hover */
+    background-color: #c9302c;
+    /* Dunkleres Rot beim Hover */
 }
 
 /* Stile für die Todo-Liste */
@@ -82,7 +94,7 @@ h1 {
     font-size: 0.8rem;
     padding: 2px 5px;
     margin-left: 10px;
-    color: #ff0000;
+    color: #d9534f;
     cursor: pointer;
 }
 
@@ -112,7 +124,7 @@ h1 {
     cursor: pointer;
 }
 
-li.completed .text  {
+li.completed .text {
     font-style: italic;
     text-decoration: line-through;
     color: #5cb85c;
@@ -124,11 +136,43 @@ li.completed .text  {
 }
 
 .group {
+    font-size: .9rem;
     padding: 10px;
     margin-right: 5px;
     background-color: #ddd;
     cursor: pointer;
+    width: 100px; /* Grup genişliği */
+    height: 20px; /* Grup yüksekliği */
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    position: relative;
 }
+
+.deleteGroup {
+    font-size: 0.7rem;
+    padding: 4px;
+    margin: 0;
+    color: #fff; /* Buton yazı rengi */
+    cursor: pointer;
+    position: absolute;
+    top: 0px; /* Üstten konumlandırma, butonu grup sınırlarının dışına çıkarır */
+    right: 0px; /* Sağdan konumlandırma, butonu grup sınırlarının dışına çıkarır */
+    background-color: #d9534f; /* Buton arka plan rengi */    border-radius: 25%;
+    width: 15px; /* Buton genişliği */
+    height: 15px; /* Buton yüksekliği */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box; /* Padding ve border dahil olmak üzere toplam boyutlar */
+    
+}
+
+.deleteGroup:hover {
+    background-color: #c9302c;
+}
+
 
 .group.active {
     background-color: #5cb85c;

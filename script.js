@@ -8,19 +8,23 @@ document.addEventListener('DOMContentLoaded', function() {
     let activeGroup = localStorage.getItem('activeGroup') || 'defaultGroup';
 
     // Varsayılan grup için bir gösterge olup olmadığını kontrol et ve yoksa oluştur
-    if (!localStorage.getItem('groups')) {
-        saveGroups(['defaultGroup']); // Varsayılan grubu kaydet
+    if(defaultGroupElement) {
+        defaultGroupElement.click();
     }
     loadGroups();
+
+    updateAddGroupButtonVisibility();
 
     addGroupButton.addEventListener('click', function() {
         const groupName = prompt("Gruppenname eingeben:", "Neue Gruppe");
         if (groupName && !document.querySelector(`[data-group-name="${groupName}"]`)) {
             addGroup(groupName);
             saveGroups();
+            updateAddGroupButtonVisibility();
         }
     });
 
+    
     function setActiveGroupListeners() {
         const groupElements = document.querySelectorAll('.group');
         groupElements.forEach(group => {
@@ -63,32 +67,41 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function addGroup(groupName, isDefault = false) {
+        // Grup ismini 12 karakterle sınırla
+        const trimmedGroupName = groupName.substring(0, 12);
+    
         const groupDiv = document.createElement('div');
         groupDiv.classList.add('group');
-        groupDiv.textContent = groupName;
-        groupDiv.setAttribute('data-group-name', groupName);
-
+        groupDiv.setAttribute('data-group-name', trimmedGroupName);
+    
+        const groupNameSpan = document.createElement('span');
+        groupNameSpan.textContent = trimmedGroupName;
+        groupDiv.appendChild(groupNameSpan);
+    
         if (!isDefault) {
             const deleteGroupButton = document.createElement('button');
             deleteGroupButton.textContent = 'X';
             deleteGroupButton.classList.add('deleteGroup');
             deleteGroupButton.addEventListener('click', function(event) {
                 event.stopPropagation();
-                deleteGroup(groupName);
+                deleteGroup(trimmedGroupName);
             });
             groupDiv.appendChild(deleteGroupButton);
         }
-
+    
         groupContainer.insertBefore(groupDiv, addGroupButton);
-
-        if (groupName === activeGroup) {
+    
+        if (trimmedGroupName === activeGroup) {
             groupDiv.classList.add('active');
-            setActiveGroup(groupName);
         }
-
-        updateAddGroupButtonVisibility();
+    
+        // Güncellenen gruplar listesini kaydet ve aktif grup dinleyicilerini ayarla
+        saveGroups();
         setActiveGroupListeners();
     }
+    
+    
+    
 
     setActiveGroup(activeGroup);
 
@@ -123,11 +136,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 localStorage.removeItem('todos-' + groupName);
                 saveGroups();
                 updateAddGroupButtonVisibility();
-
-                setActiveGroup('defaultGroup');
+    
+                // Grup silindikten sonra "Allgemein" grubunu aktif et
+                const defaultGroupElement = document.getElementById('defaultGroup');
+                if (defaultGroupElement) {
+                    defaultGroupElement.click(); // "Allgemein" grubuna programatik olarak tıkla
+                }
             }
         }
     }
+    
 
     function loadGroups() {
         const savedGroups = JSON.parse(localStorage.getItem('groups')) || [];
@@ -143,6 +161,8 @@ document.addEventListener('DOMContentLoaded', function() {
     function saveGroups() {
         const groups = Array.from(document.querySelectorAll('.group[data-group-name]')).map(group => group.getAttribute('data-group-name'));
         localStorage.setItem('groups', JSON.stringify(groups));
+        localStorage.setItem('groupCount', groups.length.toString());
+        updateAddGroupButtonVisibility();
     }
 
     function todoAdd(text, completed) {
