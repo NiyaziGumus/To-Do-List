@@ -1,10 +1,11 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
     const addButton = document.getElementById('addTodoButton');
     const inputField = document.getElementById('todoInput');
     const clearAllButton = document.getElementById('clearAllTodosButton');
     const addGroupButton = document.getElementById('addGroupButton');
     const groupContainer = document.getElementById('groupContainer');
-    let activeGroup = 'defaultGroup';
+    const defaultGroupElement = document.getElementById('defaultGroup');
+    let activeGroup = localStorage.getItem('activeGroup') || 'defaultGroup';
 
     // Varsayılan grup için bir gösterge olup olmadığını kontrol et ve yoksa oluştur
     if (!localStorage.getItem('groups')) {
@@ -12,9 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     loadGroups();
 
-    setActiveGroup('defaultGroup'); // Varsayılan grubu aktif olarak ayarla
-
-    addGroupButton.addEventListener('click', function () {
+    addGroupButton.addEventListener('click', function() {
         const groupName = prompt("Gruppenname eingeben:", "Neue Gruppe");
         if (groupName && !document.querySelector(`[data-group-name="${groupName}"]`)) {
             addGroup(groupName);
@@ -22,20 +21,19 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    
-
     function setActiveGroupListeners() {
-        document.querySelectorAll('.group').forEach(group => {
-            group.removeEventListener('click', groupClickHandler); // Önce var olan listener'ı kaldır
-            group.addEventListener('click', groupClickHandler); // Yeniden ekleme
+        const groupElements = document.querySelectorAll('.group');
+        groupElements.forEach(group => {
+            group.addEventListener('click', groupClickHandler);
         });
     }
 
-    function groupClickHandler() {
-        setActiveGroup(this.getAttribute('data-group-name'));
+    function groupClickHandler(event) {
+        const groupName = event.currentTarget.getAttribute('data-group-name');
+        setActiveGroup(groupName);
     }
 
-    addButton.addEventListener('click', function () {
+    addButton.addEventListener('click', function() {
         const todoText = inputField.value.trim();
         if (todoText !== '') {
             todoAdd(todoText, false);
@@ -46,18 +44,23 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    inputField.addEventListener('keydown', function (event) {
+    inputField.addEventListener('keydown', function(event) {
         if (event.key === 'Enter') {
             addButton.click();
         }
     });
 
-    clearAllButton.addEventListener('click', function () {
+    clearAllButton.addEventListener('click', function() {
         if (confirm('Möchten Sie wirklich alle Todos löschen?')) {
             document.getElementById('todoList').innerHTML = '';
             saveTodos();
         }
     });
+
+    function updateAddGroupButtonVisibility() {
+        const groupCount = document.querySelectorAll('.group[data-group-name]').length;
+        addGroupButton.style.display = groupCount >= 4 ? 'none' : 'inline-block';
+    }
 
     function addGroup(groupName, isDefault = false) {
         const groupDiv = document.createElement('div');
@@ -65,64 +68,69 @@ document.addEventListener('DOMContentLoaded', function () {
         groupDiv.textContent = groupName;
         groupDiv.setAttribute('data-group-name', groupName);
 
-        const deleteGroupButton = document.createElement('button');
-        deleteGroupButton.textContent = 'X';
-        deleteGroupButton.classList.add('deleteGroup');
-        deleteGroupButton.addEventListener('click', function (event) {
-            event.stopPropagation();
-            deleteGroup(groupName);
-        });
-
-        groupDiv.appendChild(deleteGroupButton);
-        groupDiv.addEventListener('click', function () {
-            setActiveGroup(groupName);
-        });
-
-        groupContainer.insertBefore(groupDiv, addGroupButton);
-
-        // Eğer bu varsayılan grup ise, doğrudan aktif olarak işaretle
-        if (isDefault) {
-            groupDiv.classList.add('active');
+        if (!isDefault) {
+            const deleteGroupButton = document.createElement('button');
+            deleteGroupButton.textContent = 'X';
+            deleteGroupButton.classList.add('deleteGroup');
+            deleteGroupButton.addEventListener('click', function(event) {
+                event.stopPropagation();
+                deleteGroup(groupName);
+            });
+            groupDiv.appendChild(deleteGroupButton);
         }
 
-        setActiveGroupListeners();
-
         groupContainer.insertBefore(groupDiv, addGroupButton);
-        groupContainer.appendChild(addGroupButton); // "+" işaretini sona taşı
+
+        if (groupName === activeGroup) {
+            groupDiv.classList.add('active');
+            setActiveGroup(groupName);
+        }
+
+        updateAddGroupButtonVisibility();
+        setActiveGroupListeners();
     }
 
-    setActiveGroup('defaultGroup');
+    setActiveGroup(activeGroup);
 
     function setActiveGroup(groupName) {
-        activeGroup = groupName;
-        const allGroups = document.querySelectorAll('.group');
-        allGroups.forEach(group => {
-            group.classList.remove('active'); // Tüm gruplardan 'active' sınıfını kaldır
-            if (group.getAttribute('data-group-name') === groupName) {
-                group.classList.add('active'); // Aktif grup için 'active' sınıfı ekle
-            }
+        const groupElements = Array.from(document.querySelectorAll('.group'));
+    
+        // Varsayılan grup dahil tüm grupları pasif hale getir.
+        groupElements.forEach(group => {
+            group.classList.remove('active');
         });
-        
-        if(groupName === 'defaultGroup') {
-            // Varsayılan grubu direkt olarak seçili göster
-            document.getElementById('defaultGroup').classList.add('active');
+    
+        // Seçilen grubu aktif hale getir.
+        const selectedGroup = document.querySelector(`[data-group-name="${groupName}"]`);
+        if (selectedGroup) {
+            selectedGroup.classList.add('active');
+        } else {
+            // Eğer seçilen grup bulunamazsa, varsayılan grubu aktif yap.
+            defaultGroupElement.classList.add('active');
         }
+    
+        activeGroup = groupName;
+        localStorage.setItem('activeGroup', groupName);
         loadTodos();
     }
-
-    setActiveGroup('defaultGroup');
+    
 
     function deleteGroup(groupName) {
-        document.querySelector(`[data-group-name="${groupName}"]`).remove();
-        localStorage.removeItem('todos-' + groupName);
-        saveGroups();
-        if (activeGroup === groupName) {
-            setActiveGroup('defaultGroup');
+        if (confirm(`Möchten Sie wirklich die Gruppe "${groupName}" löschen?`)) {
+            const groupElement = document.querySelector(`[data-group-name="${groupName}"]`);
+            if (groupElement) {
+                groupElement.remove();
+                localStorage.removeItem('todos-' + groupName);
+                saveGroups();
+                updateAddGroupButtonVisibility();
+
+                setActiveGroup('defaultGroup');
+            }
         }
     }
 
     function loadGroups() {
-        const savedGroups = JSON.parse(localStorage.getItem('groups'));
+        const savedGroups = JSON.parse(localStorage.getItem('groups')) || [];
         savedGroups.forEach(groupName => {
             if (groupName === 'defaultGroup') {
                 addGroup(groupName, true);
@@ -130,8 +138,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 addGroup(groupName);
             }
         });
-        setActiveGroupListeners();
-        setActiveGroup('defaultGroup');
     }
 
     function saveGroups() {
@@ -143,14 +149,25 @@ document.addEventListener('DOMContentLoaded', function () {
         const todoList = document.getElementById('todoList');
         const li = document.createElement('li');
         li.className = completed ? 'completed' : '';
-        li.innerHTML = `<div class="checkmark-box">${completed ? '&#10003;' : ''}</div><span class="text">${text}</span><span class="deleteButton">X</span>`;
+        li.innerHTML = `
+            <div class="checkmark-box">${completed ? '&#10003;' : ''}</div>
+            <span class="text">${text}</span>
+            <span class="deleteButton">X</span>`;
 
-        li.querySelector('.checkmark-box').addEventListener('click', function () {
-            li.classList.toggle('completed');
+        const checkmarkBox = li.querySelector('.checkmark-box');
+        const textSpan = li.querySelector('.text');
+
+        const toggleCompleted = () => {
+            const isCompleted = li.classList.contains('completed');
+            li.classList.toggle('completed', !isCompleted);
+            checkmarkBox.innerHTML = isCompleted ? '' : '&#10003;';
             saveTodos();
-        });
+        };
 
-        li.querySelector('.deleteButton').addEventListener('click', function () {
+        checkmarkBox.addEventListener('click', toggleCompleted);
+        textSpan.addEventListener('click', toggleCompleted);
+
+        li.querySelector('.deleteButton').addEventListener('click', function() {
             todoList.removeChild(li);
             saveTodos();
         });
@@ -171,5 +188,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }));
         localStorage.setItem('todos-' + activeGroup, JSON.stringify(todos));
     }
-    // setActiveGroup('defaultGroup');
+
+    setActiveGroupListeners();
 });
