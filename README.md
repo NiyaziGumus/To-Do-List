@@ -3,7 +3,7 @@
 ## Project Preview
 Here's a preview of our Todo List Application:
 
-![Todo List Application Preview](https://github.com/NiyaziGumus/To-Do-List/blob/main/Screenshot.png)
+![Todo List Application Preview](https://github.com/NiyaziGumus/To-Do-List/blob/browser-compatible-version/preview.png)
 
 ## About the Project
 
@@ -21,6 +21,7 @@ The project is built using the following technologies:
 ## Features
 
 - **Add, Complete, and Delete Tasks**: Users can add new tasks, mark tasks as completed, or delete tasks from the list.
+- **Create Groups for Tasks**: Allows users to organize their tasks into customizable groups, enabling better task management and prioritization.
 - **Data Persistence**: Implements LocalStorage to save and retrieve the state of your todo list, making your data persistent across browser sessions.
 - **Responsive Design**: The application is fully responsive, providing an optimal user experience on both desktop and mobile devices.
 - **Pure Frontend Implementation**: Showcases the capability to build interactive web applications using only frontend technologies.
