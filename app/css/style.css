@@ -1,8 +1,19 @@
 /* Grundlegende Seitenstile */
+@font-face {
+    font-family: 'Indie Flower';
+    src: url('../fonts/IndieFlower-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/Roboto-Regular.ttf') format('truetype');
+}
+
+
+
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Roboto', sans-serif;
     background-color: #f4f4f4;
-    /* Hintergrundfarbe */
     display: flex;
     justify-content: center;
     margin: 0;
@@ -24,7 +35,7 @@ h1 {
     color: #333;
     text-align: center;
     margin-bottom: 20px;
-    /* Abstand zwischen Überschrift und Eingabebereich */
+
 }
 
 /* Container für das Eingabefeld und die Buttons */
@@ -66,16 +77,17 @@ h1 {
 
 #clearAllTodosButton {
     background-color: #d9534f;
-    /* Hintergrundfarbe für den Alle löschen-Button */
+    
 }
 
 #clearAllTodosButton:hover {
     background-color: #c9302c;
-    /* Dunkleres Rot beim Hover */
+    
 }
 
-/* Stile für die Todo-Liste */
+
 #todoList {
+    font-family: 'Indie Flower', cursive;
     list-style: none;
     padding: 0;
     width: 100%;
@@ -141,8 +153,8 @@ li.completed .text {
     margin-right: 5px;
     background-color: #ddd;
     cursor: pointer;
-    width: 100px; /* Grup genişliği */
-    height: 20px; /* Grup yüksekliği */
+    width: 100px; 
+    height: 20px;
     text-align: center;
     overflow: hidden;
     white-space: nowrap;
@@ -154,18 +166,19 @@ li.completed .text {
     font-size: 0.7rem;
     padding: 4px;
     margin: 0;
-    color: #fff; /* Buton yazı rengi */
+    color: #fff; 
     cursor: pointer;
     position: absolute;
-    top: 0px; /* Üstten konumlandırma, butonu grup sınırlarının dışına çıkarır */
-    right: 0px; /* Sağdan konumlandırma, butonu grup sınırlarının dışına çıkarır */
-    background-color: #d9534f; /* Buton arka plan rengi */    border-radius: 25%;
-    width: 15px; /* Buton genişliği */
-    height: 15px; /* Buton yüksekliği */
+    top: 0px; 
+    right: 0px;
+    background-color: #d9534f;    
+    border-radius: 25%;
+    width: 15px; 
+    height: 15px; 
     display: flex;
     align-items: center;
     justify-content: center;
-    box-sizing: border-box; /* Padding ve border dahil olmak üzere toplam boyutlar */
+    box-sizing: border-box; 
     
 }
 
