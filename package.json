@@ -1,0 +1,21 @@
+{
+    "name": "my-nwjs-app",
+    "version": "1.0.0",
+    "description": "A simple NW.js application",
+    "main": "app/index.html",
+    "scripts": {
+    "start": "nw ."
+    },
+    "window": {
+    "title": "My NW.js App",
+    "icon": "app/icons/app-icon.ico",
+    "width": 800,
+    "height": 600,
+    "min_width": 400,
+    "min_height": 300,
+    "toolbar": false
+    },
+    "devDependencies": {
+    "nw": "^0.85.0"
+    }
+    }
