@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const defaultGroupElement = document.getElementById('defaultGroup');
     let activeGroup = localStorage.getItem('activeGroup') || 'defaultGroup';
 
-    // Varsayılan grup için bir gösterge olup olmadığını kontrol et ve yoksa oluştur
     if(defaultGroupElement) {
         defaultGroupElement.click();
     }
@@ -67,8 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function addGroup(groupName, isDefault = false) {
-        // Grup ismini 12 karakterle sınırla
-        const trimmedGroupName = groupName.substring(0, 12);
+        const trimmedGroupName = groupName.substring(0, 25);
     
         const groupDiv = document.createElement('div');
         groupDiv.classList.add('group');
@@ -95,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function() {
             groupDiv.classList.add('active');
         }
     
-        // Güncellenen gruplar listesini kaydet ve aktif grup dinleyicilerini ayarla
+        
         saveGroups();
         setActiveGroupListeners();
     }
@@ -108,17 +106,14 @@ document.addEventListener('DOMContentLoaded', function() {
     function setActiveGroup(groupName) {
         const groupElements = Array.from(document.querySelectorAll('.group'));
     
-        // Varsayılan grup dahil tüm grupları pasif hale getir.
         groupElements.forEach(group => {
             group.classList.remove('active');
         });
     
-        // Seçilen grubu aktif hale getir.
         const selectedGroup = document.querySelector(`[data-group-name="${groupName}"]`);
         if (selectedGroup) {
             selectedGroup.classList.add('active');
         } else {
-            // Eğer seçilen grup bulunamazsa, varsayılan grubu aktif yap.
             defaultGroupElement.classList.add('active');
         }
     
@@ -137,10 +132,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 saveGroups();
                 updateAddGroupButtonVisibility();
     
-                // Grup silindikten sonra "Allgemein" grubunu aktif et
                 const defaultGroupElement = document.getElementById('defaultGroup');
                 if (defaultGroupElement) {
-                    defaultGroupElement.click(); // "Allgemein" grubuna programatik olarak tıkla
+                    defaultGroupElement.click(); 
                 }
             }
         }

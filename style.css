@@ -1,8 +1,7 @@
 /* Grundlegende Seitenstile */
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Roboto', sans-serif;
     background-color: #f4f4f4;
-    /* Hintergrundfarbe */
     display: flex;
     justify-content: center;
     margin: 0;
@@ -79,9 +78,13 @@ h1 {
     list-style: none;
     padding: 0;
     width: 100%;
+   
+      
 }
 
 #todoList li {
+    font-family: 'Indie Flower', cursive;
+    font-size: 1.2rem;
     background-color: #eee;
     margin-top: 8px;
     padding: 10px;
@@ -141,8 +144,8 @@ li.completed .text {
     margin-right: 5px;
     background-color: #ddd;
     cursor: pointer;
-    width: 100px; /* Grup genişliği */
-    height: 20px; /* Grup yüksekliği */
+    width: 100px; 
+    height: 20px; 
     text-align: center;
     overflow: hidden;
     white-space: nowrap;

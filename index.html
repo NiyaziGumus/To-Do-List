@@ -1,17 +1,36 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
-    <meta char  ="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Todo-Liste App</title>
-    <link rel="stylesheet" href="style.css"> 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/img/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="/img/favicon-64x64.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/img/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="128x128" href="/img/favicon-128x128.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/img/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="256x256" href="/img/favicon-256x256.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
+    <link rel="manifest" href="/img/site.webmanifest">
+    <link rel="mask-icon" href="/img/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="style.css">
+
 </head>
+
 <body>
     <div id="app">
         <h1>Todo-Liste</h1>
-    
+
         <div class="input-group">
-            <input type="text" id="todoInput" placeholder="Was müssen Sie tun?"/>
+            <input type="text" id="todoInput" placeholder="Was müssen Sie tun?" />
             <button id="addTodoButton">Hinzufügen</button>
             <button id="clearAllTodosButton">Liste leeren</button>
         </div>
@@ -20,7 +39,7 @@
             <div id="defaultGroup" class="group active" data-group="defaultGroup">Allgemein</div>
             <button id="addGroupButton">+</button>
         </div>
-        
+
         <div id="todoGroups">
             <ul id="todoList">
                 <!-- Todo-Einträge werden hier aufgelistet -->
@@ -28,6 +47,7 @@
         </div>
     </div>
 
-    <script src="script.js"></script> 
+    <script src="script.js"></script>
 </body>
+
 </html>
