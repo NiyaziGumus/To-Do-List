@@ -2,32 +2,38 @@
     "name": "my-nwjs-app",
     "version": "1.0.0",
     "description": "A simple NW.js application",
-    "main": "app/index.html",
+    "main": "./app/index.html",
     "scripts": {
-      "start": "nw .",
-      "build": "nwbuild --platforms=win64,osx64 --buildDir dist"
+        "start": "nw .",
+        "build": "nwbuild --config nw-builder.json"
     },
     "window": {
-      "title": "My NW.js App",
-      "icon": "app/icons/app-icon.ico",
-      "width": 800,
-      "height": 600,
-      "min_width": 400,
-      "min_height": 300,
-      "toolbar": false
+        "title": "My NW.js App",
+        "icon": "app/icons/app-icon.ico",
+        "width": 800,
+        "height": 600,
+        "min_width": 400,
+        "min_height": 300,
+        "toolbar": false
     },
     "devDependencies": {
-      "nw": "^0.85.0",
-      "nw-builder": "^4.6.4"
+        "nw": "^0.85.0",
+        "nw-builder": "^4.6.4"
     },
-    "build": {
-      "appId": "com.example.myapp",
-      "files": ["./app/**/*"],
-      "win": {
-        "target": ["nsis"]
-      },
-      "osx": {
-        "target": ["dmg"]
-      }
+    "nwBuilder": {
+        "appId": "com.example.myapp",
+        "files": [
+            "./app/**/*"
+        ],
+        "win": {
+            "target": [
+                "nsis"
+            ]
+        },
+        "osx": {
+            "target": [
+                "dmg"
+            ]
+        }
     }
-  }
+}
