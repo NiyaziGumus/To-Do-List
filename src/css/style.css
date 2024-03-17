@@ -162,7 +162,7 @@ li.completed .text {
     position: relative;
 }
 
-.deleteGroup {
+.delete-group-button  {
     font-size: 0.7rem;
     padding: 4px;
     margin: 0;
@@ -179,10 +179,11 @@ li.completed .text {
     align-items: center;
     justify-content: center;
     box-sizing: border-box; 
+    position: absolute;
     
 }
 
-.deleteGroup:hover {
+.delete-group-button:hover {
     background-color: #c9302c;
 }
 
