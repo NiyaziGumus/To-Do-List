@@ -1,29 +1,49 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const addButton = document.getElementById('addTodoButton');
     const inputField = document.getElementById('todoInput');
     const clearAllButton = document.getElementById('clearAllTodosButton');
     const addGroupButton = document.getElementById('addGroupButton');
     const groupContainer = document.getElementById('groupContainer');
     const defaultGroupElement = document.getElementById('defaultGroup');
+    const addGroupModal = document.getElementById('addGroupModal');
+    const closeSpan = document.getElementsByClassName('close')[0];
     let activeGroup = localStorage.getItem('activeGroup') || 'defaultGroup';
 
-    if(defaultGroupElement) {
-        defaultGroupElement.click();
-    }
-    loadGroups();
+    
 
+    defaultGroupElement.click();
+    loadGroups();
     updateAddGroupButtonVisibility();
 
-    addGroupButton.addEventListener('click', function() {
-        const groupName = prompt("Gruppenname eingeben:", "Neue Gruppe");
+    // Modal öffnen
+    addGroupButton.onclick = function () {
+        addGroupModal.style.display = 'block';
+    }
+
+    // Modal schließen
+    closeSpan.onclick = function () {
+        addGroupModal.style.display = 'none';
+    }
+
+    // Modal schließen, wenn außerhalb geklickt wird
+    window.onclick = function (event) {
+        if (event.target == addGroupModal) {
+            addGroupModal.style.display = 'none';
+        }
+    }
+
+    // Gruppe speichern
+    const saveGroupButton = document.getElementById('saveGroup');
+    saveGroupButton.onclick = function () {
+        const groupName = document.getElementById('newGroupName').value;
         if (groupName && !document.querySelector(`[data-group-name="${groupName}"]`)) {
             addGroup(groupName);
             saveGroups();
             updateAddGroupButtonVisibility();
         }
-    });
+        addGroupModal.style.display = 'none';
+    }
 
-    
     function setActiveGroupListeners() {
         const groupElements = document.querySelectorAll('.group');
         groupElements.forEach(group => {
@@ -36,25 +56,35 @@ document.addEventListener('DOMContentLoaded', function() {
         setActiveGroup(groupName);
     }
 
-    addButton.addEventListener('click', function() {
+    addButton.addEventListener('click', function () {
         const todoText = inputField.value.trim();
         if (todoText !== '') {
             todoAdd(todoText, false);
             inputField.value = '';
             saveTodos();
         } else {
-            alert('Bitte geben Sie einen Todo-Text ein.');
+            window.electronAPI.showDialog({
+                type: 'warning',
+                message: 'Bitte geben Sie einen Todo-Text ein.'
+            });
         }
     });
 
-    inputField.addEventListener('keydown', function(event) {
+    inputField.addEventListener('keydown', function (event) {
         if (event.key === 'Enter') {
             addButton.click();
         }
     });
 
-    clearAllButton.addEventListener('click', function() {
-        if (confirm('Möchten Sie wirklich alle Todos löschen?')) {
+    clearAllButton.addEventListener('click', async function () {
+        const { response } = await window.electronAPI.showDialog({
+            type: 'question',
+            buttons: ['Abbrechen', 'Ja'],
+            defaultId: 1,
+            title: 'Bestätigung',
+            message: 'Möchten Sie wirklich alle Todos löschen?'
+        });
+        if (response === 1) {
             document.getElementById('todoList').innerHTML = '';
             saveTodos();
         }
@@ -65,62 +95,46 @@ document.addEventListener('DOMContentLoaded', function() {
         addGroupButton.style.display = groupCount >= 4 ? 'none' : 'inline-block';
     }
 
-    function addGroup(groupName, isDefault = false) {
-        const trimmedGroupName = groupName.substring(0, 20);
-    
-        const groupDiv = document.createElement('div');
-        groupDiv.classList.add('group');
-        groupDiv.setAttribute('data-group-name', trimmedGroupName);
-    
-        const groupNameSpan = document.createElement('span');
-        groupNameSpan.textContent = trimmedGroupName;
-        groupDiv.appendChild(groupNameSpan);
-    
-        if (!isDefault) {
-            const deleteGroupButton = document.createElement('button');
-            deleteGroupButton.textContent = 'X';
-            deleteGroupButton.classList.add('deleteGroup');
-            deleteGroupButton.addEventListener('click', function(event) {
-                event.stopPropagation();
-                deleteGroup(trimmedGroupName);
+    function addGroup(groupName, isDefaultGroup = false) {
+        window.electronAPI.addGroup(groupName)
+            .then(() => {
+                // Grup başarıyla eklendi
+                const trimmedGroupName = groupName.substring(0, 20);
+                const groupDiv = document.createElement('div');
+                // Kalan kodunuzu burada devam ettirin
+                // Örneğin, groupDiv'e class ekleyin, içeriğini ayarlayın ve DOM'a ekleyin
+                groupDiv.classList.add('group');
+                groupDiv.textContent = trimmedGroupName;
+                groupDiv.setAttribute('data-group-name', trimmedGroupName);
+                document.getElementById('groupContainer').appendChild(groupDiv);
+                setActiveGroupListeners(); // Yeni grup için event listener ekleyin
+            })
+            .catch((err) => {
+                console.error('Grup eklenirken hata oluştu:', err);
             });
-            groupDiv.appendChild(deleteGroupButton);
-        }
-    
-        groupContainer.insertBefore(groupDiv, addGroupButton);
-    
-        if (trimmedGroupName === activeGroup) {
-            groupDiv.classList.add('active');
-        }
-    
-        saveGroups();
-        setActiveGroupListeners();
     }
-    
-    
     
 
     setActiveGroup(activeGroup);
 
     function setActiveGroup(groupName) {
         const groupElements = Array.from(document.querySelectorAll('.group'));
-    
+
         groupElements.forEach(group => {
             group.classList.remove('active');
         });
-    
+
         const selectedGroup = document.querySelector(`[data-group-name="${groupName}"]`);
         if (selectedGroup) {
             selectedGroup.classList.add('active');
         } else {
             defaultGroupElement.classList.add('active');
         }
-    
+
         activeGroup = groupName;
         localStorage.setItem('activeGroup', groupName);
         loadTodos();
     }
-    
 
     function deleteGroup(groupName) {
         if (confirm(`Möchten Sie wirklich die Gruppe "${groupName}" löschen?`)) {
@@ -130,15 +144,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 localStorage.removeItem('todos-' + groupName);
                 saveGroups();
                 updateAddGroupButtonVisibility();
-    
+
                 const defaultGroupElement = document.getElementById('defaultGroup');
                 if (defaultGroupElement) {
-                    defaultGroupElement.click(); 
+                    defaultGroupElement.click();
                 }
             }
         }
     }
-    
 
     function loadGroups() {
         const savedGroups = JSON.parse(localStorage.getItem('groups')) || [];
@@ -180,7 +193,7 @@ document.addEventListener('DOMContentLoaded', function() {
         checkmarkBox.addEventListener('click', toggleCompleted);
         textSpan.addEventListener('click', toggleCompleted);
 
-        li.querySelector('.deleteButton').addEventListener('click', function() {
+        li.querySelector('.deleteButton').addEventListener('click', function () {
             todoList.removeChild(li);
             saveTodos();
         });
@@ -204,3 +217,37 @@ document.addEventListener('DOMContentLoaded', function() {
 
     setActiveGroupListeners();
 });
+
+function addGroup(groupName, isDefaultGroup = false) {
+    // ...
+    electronAPI.addGroup(groupName)
+        .then(() => {
+            // Grup başarıyla eklendi
+        })
+        .catch((err) => {
+            // Hata işleme
+            console.error(err);
+        });
+}
+
+function removeGroup(groupName) {
+    window.electronAPI.removeGroup(groupName)
+        .then(() => {
+            // Grup başarıyla silindi
+            const groupElement = document.querySelector(`[data-group-name="${groupName}"]`);
+            if (groupElement) {
+                groupElement.remove();
+                localStorage.removeItem('todos-' + groupName);
+                // Diğer grupları güncelleyin
+                updateAddGroupButtonVisibility();
+                // Eğer varsayılan grup kaldıysa ona dön
+                const defaultGroupElement = document.getElementById('defaultGroup');
+                if (defaultGroupElement) {
+                    defaultGroupElement.click();
+                }
+            }
+        })
+        .catch((err) => {
+            console.error('Grup silinirken hata oluştu:', err);
+        });
+}

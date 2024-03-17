@@ -1,9 +1,0 @@
-{
-    "appName": "my-nwjs-app",
-    "appVersion": "1.0.0",
-    "main": "app/index.html",
-    "files": ["./app/**/*"],
-    "target": ["nsis", "dmg"],
-    "platforms": ["win64", "osx64"],
-    "buildDir": "dist"
-  }
