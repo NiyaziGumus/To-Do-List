@@ -38,12 +38,10 @@ h1 {
 
 }
 
-/* Container für das Eingabefeld und die Buttons */
 .input-group {
     display: flex;
     width: 100%;
     margin-bottom: 20px;
-    /* Abstand zwischen Eingabebereich und Todo-Liste */
 }
 
 #todoInput,
@@ -53,18 +51,15 @@ h1 {
     border: 1px solid #ddd;
     border-radius: 4px;
     margin-right: 10px;
-    /* Abstand zwischen den Elementen */
 }
 
 #todoInput {
     flex-grow: 1;
-    /* Eingabefeld nimmt verfügbaren Platz ein */
 }
 
 #addTodoButton,
 #clearAllTodosButton {
     background-color: #5cb85c;
-    /* Hintergrundfarbe für den Hinzufügen-Button */
     color: white;
     border: none;
     cursor: pointer;
@@ -72,7 +67,6 @@ h1 {
 
 #addTodoButton:hover {
     background-color: #4cae4c;
-    /* Dunkleres Grün beim Hover */
 }
 
 #clearAllTodosButton {

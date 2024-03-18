@@ -17,7 +17,6 @@
             <input type="text" id="todoInput" placeholder="Was müssen Sie tun?"/>
             <button id="addTodoButton">Hinzufügen</button>
             <button id="clearAllTodosButton">Liste leeren</button>
-            <button id="addGroupButton">Gruppe hinzufügen</button>
         </div>
 
         <div id="addGroupModal" class="modal">
@@ -33,7 +32,11 @@
             <div id="defaultGroup" class="group active" data-group-name="defaultGroup">
                 <span>Allgemein</span>
             </div>
+            <div id="addGroupButtonContainer">
+                <button id="addGroupButton">+</button>
+            </div>
         </div>
+        
 
         <ul id="todoList">
             <!-- Todo-Einträge werden hier aufgelistet -->

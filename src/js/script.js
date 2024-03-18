@@ -7,14 +7,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const defaultGroupElement = document.getElementById('defaultGroup');
     const addGroupModal = document.getElementById('addGroupModal');
     const closeSpan = document.getElementsByClassName('close')[0];
-    const saveGroupButton = document.getElementById('saveGroup'); // Burada tanımlandı
+    const saveGroupButton = document.getElementById('saveGroup'); 
 
-    // Modal Açma
     addGroupButton.onclick = function () {
         addGroupModal.style.display = 'block';
     };
 
-    // Modal Kapatma
+  
     closeSpan.onclick = function () {
         addGroupModal.style.display = 'none';
     };
@@ -25,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     };
 
-    // Grup Kaydetme
+    
     saveGroupButton.onclick = function () {
         const groupName = document.getElementById('newGroupName').value;
         if (groupName && !document.querySelector(`[data-group-name="${groupName}"]`)) {
@@ -36,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
         addGroupModal.style.display = 'none';
     };
 
-    // Todo Ekleme
+    // Todo Einfügen
     addButton.addEventListener('click', function () {
         const todoText = inputField.value.trim();
         if (todoText !== '') {
@@ -57,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Tüm Todos'u Temizleme
+    // Alle Todos Löschen
     clearAllButton.addEventListener('click', async function () {
         const { response } = await window.electronAPI.showDialog({
             type: 'question',
@@ -72,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Başlangıçta Grupları Yükleme ve Aktif Grubu Ayarlama
+    
     loadGroups();
     setActiveGroup(activeGroup);
 });
@@ -134,7 +133,7 @@ function saveGroups() {
     const groups = Array.from(document.querySelectorAll('.group[data-group-name]')).map(group => group.getAttribute('data-group-name'));
     localStorage.setItem('groups', JSON.stringify(groups));
     localStorage.setItem('groupCount', groups.length.toString());
-    localStorage.setItem('maxGroupCount', '5'); // Maksimum grup sayısını kaydedin
+    localStorage.setItem('maxGroupCount', '5'); 
     updateAddGroupButtonVisibility();
 }
 
@@ -144,24 +143,25 @@ function addGroupToDOM(groupName, isDefaultGroup = false) {
     groupDiv.textContent = groupName;
     groupDiv.setAttribute('data-group-name', groupName);
 
-    if (!isDefaultGroup) { // Varsayılan grup için silme butonu eklenmemeli
+    if (!isDefaultGroup) {
         const deleteButton = document.createElement('button');
-        deleteButton.textContent = 'X'; // Daha açık bir metin için
+        deleteButton.textContent = 'X';
         deleteButton.classList.add('delete-group-button');
 
         deleteButton.addEventListener('click', function (event) {
-            event.stopPropagation(); // Grubun kendisine tıklama olayının yayılmasını önler
+            event.stopPropagation();
             confirmDeleteGroup(groupName);
         });
 
-        groupDiv.appendChild(deleteButton); // Butonu gruba ekleyin
+        groupDiv.appendChild(deleteButton);
     }
 
-    document.getElementById('groupContainer').appendChild(groupDiv); // Grubu DOM'a ekleyin
+    const groupContainer = document.getElementById('groupContainer');
+    groupContainer.insertBefore(groupDiv, groupContainer.lastElementChild); 
+
     loadGroups();
     updateAddGroupButtonVisibility();
     setActiveGroupListeners();
-
 }
 
 function confirmDeleteGroup(groupName) {
@@ -173,7 +173,7 @@ function confirmDeleteGroup(groupName) {
     }).then(result => {
         if (result.response === 1) {
             deleteGroup(groupName);
-            updateAddGroupButtonVisibility(); // Burayı ekleyin
+            updateAddGroupButtonVisibility(); 
         }
     });
 }
@@ -182,11 +182,11 @@ function deleteGroup(groupName) {
     const groupElement = document.querySelector(`[data-group-name="${groupName}"]`);
     if (groupElement) {
         groupElement.remove();
-        localStorage.removeItem('todos-' + groupName); // Eğer grupla ilişkili todos varsa
+        localStorage.removeItem('todos-' + groupName); 
         saveGroups();
         updateAddGroupButtonVisibility();
 
-        // Grup silindikten sonra varsayılan gruba dön
+        
         if (activeGroup === groupName) {
             activeGroup = 'defaultGroup';
             setActiveGroup('defaultGroup');
@@ -197,27 +197,23 @@ function deleteGroup(groupName) {
 function addGroup(groupName, isDefaultGroup = false) {
     window.electronAPI.addGroup(groupName)
         .then(() => {
-            // Grup başarıyla eklendi
-            addGroupToDOM(groupName, isDefaultGroup); // Bu satırı geri ekleyin
+            addGroupToDOM(groupName, isDefaultGroup); 
             saveGroups();
             updateAddGroupButtonVisibility();
         })
         .catch((err) => {
-            console.error('Grup eklenirken hata oluştu:', err);
+            console.error('Fehler beim Hinzufügen der Gruppe:', err);
         });
 } 
 
 function removeGroup(groupName) {
     window.electronAPI.removeGroup(groupName)
         .then(() => {
-            // Grup başarıyla silindi
             const groupElement = document.querySelector(`[data-group-name="${groupName}"]`);
             if (groupElement) {
                 groupElement.remove();
                 localStorage.removeItem('todos-' + groupName);
-                // Diğer grupları güncelleyin
                 updateAddGroupButtonVisibility();
-                // Eğer varsayılan grup kaldıysa ona dön
                 const defaultGroupElement = document.getElementById('defaultGroup');
                 if (defaultGroupElement) {
                     defaultGroupElement.click();
@@ -232,7 +228,7 @@ function removeGroup(groupName) {
 function loadGroups() {
     const savedGroups = JSON.parse(localStorage.getItem('groups')) || [];
     if (!document.querySelector(`[data-group-name="defaultGroup"]`)) {
-        savedGroups.unshift('defaultGroup'); // Eğer defaultGroup yoksa listenin başına ekle
+        savedGroups.unshift('defaultGroup'); 
     }
     savedGroups.forEach(groupName => {
         if (!document.querySelector(`[data-group-name="${groupName}"]`)) {
@@ -264,7 +260,7 @@ function groupClickHandler(event) {
 function setActiveGroupListeners() {
     const groupElements = document.querySelectorAll('.group');
     groupElements.forEach(group => {
-        group.removeEventListener('click', groupClickHandler); // Önceki event listener'ları kaldır
-        group.addEventListener('click', groupClickHandler); // Yeniden event listener ekle
+        group.removeEventListener('click', groupClickHandler); 
+        group.addEventListener('click', groupClickHandler); 
     });
 }
