@@ -1,8 +1,8 @@
 {
-  "name": "to-do-list-electron",
-  "productName": "to-do-list-electron",
+  "name": "todo-list",
+  "productName": "ToDo List",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "A simple to-do list app.",
   "main": "src/index.js",
   "scripts": {
     "start": "electron-forge start",
@@ -10,6 +10,11 @@
     "make": "electron-forge make",
     "publish": "electron-forge publish",
     "lint": "echo \"No linting configured\""
+  },
+  "author": "Niyazi Gumus",
+  "license": "MIT",
+  "dependencies": {
+    "electron-squirrel-startup": "^1.0.0"
   },
   "devDependencies": {
     "@electron-forge/cli": "^7.3.0",
@@ -22,13 +27,13 @@
     "@electron/fuses": "^1.7.0",
     "electron": "29.1.4"
   },
-  "keywords": [],
-  "author": {
-    "name": "Niyo",
-    "email": "ngumus14@gmail.com"
-  },
-  "license": "MIT",
-  "dependencies": {
-    "electron-squirrel-startup": "^1.0.0"
+  "build": {
+    "appId": "com.niyazigumus/todolist.com",
+    "win": {
+      "icon": "build/icon.ico"
+    },
+    "mac": {
+      "icon": "build/icon.icns"
+    }
   }
 }
