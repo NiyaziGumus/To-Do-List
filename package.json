@@ -26,14 +26,6 @@
     "@electron-forge/plugin-fuses": "^7.3.0",
     "@electron/fuses": "^1.7.0",
     "electron": "29.1.4"
-  },
-  "build": {
-    "appId": "com.niyazigumus/todolist.com",
-    "win": {
-      "icon": "build/icon.ico"
-    },
-    "mac": {
-      "icon": "build/icon.icns"
-    }
   }
+ 
 }

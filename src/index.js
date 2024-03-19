@@ -10,6 +10,7 @@ const createWindow = () => {
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
+    icon: './icons/icon.png',
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: false,
@@ -19,7 +20,6 @@ const createWindow = () => {
   });
 
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
- 
 };
 
 app.on('ready', () => {
@@ -55,8 +55,6 @@ ipcMain.handle('add-group', async (event, groupName) => {
 ipcMain.handle('remove-group', async (event, groupName) => {
   removeGroup(groupName);
 });
-
-
 
 function addGroup(groupName) {
   mainWindow.webContents.send('group-added', groupName);
