@@ -3,7 +3,7 @@
 ## Project Preview
 Here's a preview of our Todo List Application:
 
-![Todo List Application Preview](https://github.com/NiyaziGumus/To-Do-List/blob/main/Screenshot.png)
+![Todo List Application Preview](https://github.com/NiyaziGumus/To-Do-List/blob/main/preview.png)
 
 ## About the Project
 
